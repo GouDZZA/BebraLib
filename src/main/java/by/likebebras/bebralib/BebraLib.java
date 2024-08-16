@@ -1,17 +1,22 @@
 package by.likebebras.bebralib;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import by.likebebras.bebralib.managers.CommandManager;
+import by.likebebras.bebralib.ez.EzPlugin;
 
-public final class BebraLib extends JavaPlugin {
+public final class BebraLib extends EzPlugin {
+
+    private final CommandManager manager = new CommandManager(this);
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        new BebraLibCommand(this).register(manager);
+        this.cfg = new BebraLibConfig(this);
 
+        cfg.load();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        manager.unregisterAll();
     }
 }
