@@ -9,6 +9,7 @@ public class BebraLibConfig extends EzConfig {
 
     @Override
     public void reload() {
-
+        clearFiles();
+        load();
     }
 }

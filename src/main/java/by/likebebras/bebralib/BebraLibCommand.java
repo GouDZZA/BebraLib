@@ -20,5 +20,6 @@ public class BebraLibCommand extends EzCommand {
 
     @Override
     public void onCommand(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] args) {
+        daddy.reloadConfig();
     }
 }

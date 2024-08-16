@@ -2,11 +2,10 @@ package by.likebebras.bebralib.managers;
 
 import by.likebebras.bebralib.ez.EzCommand;
 import by.likebebras.bebralib.ez.EzPlugin;
-import by.likebebras.bebralib.utils.CommandHelper;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
 public class CommandManager {
     private final HashMap<String, EzCommand> commands = new HashMap<>();
@@ -18,24 +17,33 @@ public class CommandManager {
 
     public void registerCommand(EzCommand cmd){
         commands.put(cmd.getLabel(), cmd);
-        cmd.getAliases().forEach(l -> commands.put(l, cmd));
 
-        CommandHelper.register(cmd);
+        register(cmd);
     }
 
-    public void unregisterCommand(String cmd){
-        EzCommand ezCommand = commands.remove(cmd);
+    public void unregisterCommand(EzCommand cmd){
+        commands.remove(cmd.getLabel());
+        cmd.getAliases().forEach(commands::remove);
 
-        if (ezCommand == null) return;
+        unregister(cmd);
+    }
 
-        ezCommand.getAliases().forEach(commands::remove);
+    private void register(EzCommand cmd){
+        Bukkit.getServer().getCommandMap().register(plugin.getName(), cmd);
+        Bukkit.getServer().getCommandMap().getKnownCommands().put(cmd.getLabel(), cmd);
+        for (String alias : cmd.getAliases()) {
+            Bukkit.getServer().getCommandMap().getKnownCommands().put(alias, cmd);
+        }
+    }
+    private void unregister(EzCommand cmd){
+        if (cmd == null) return;
 
-        CommandHelper.unregister(ezCommand);
+        CommandMap map = Bukkit.getServer().getCommandMap();
+        map.getKnownCommands().entrySet().removeIf(commandEntry -> commandEntry.getValue() == cmd);
+        cmd.unregister(map);
     }
 
     public void unregisterAll(){
-        Collection<String> cmds = commands.keySet();
-
-        cmds.forEach(this::unregisterCommand);
+        commands.values().forEach(this::unregister);
     }
 }

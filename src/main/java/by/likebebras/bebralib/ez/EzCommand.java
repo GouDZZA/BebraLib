@@ -1,7 +1,9 @@
 package by.likebebras.bebralib.ez;
 
 import by.likebebras.bebralib.managers.CommandManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -36,18 +38,22 @@ public abstract class EzCommand extends Command {
 
     public void onlyPlayers(){
         onlyPlayer = true;
+        onlyConsole(false);
     }
 
     public void onlyPlayers(boolean b){
         onlyPlayer = b;
+        onlyConsole(!b);
     }
 
     public void onlyConsole(){
         onlyConsole = true;
+        onlyPlayers(false);
     }
 
     public void onlyConsole(boolean b){
         onlyConsole = b;
+        onlyPlayers(!b);
     }
 
 
@@ -66,5 +72,9 @@ public abstract class EzCommand extends Command {
 
     public void register(CommandManager manager){
         manager.registerCommand(this);
+    }
+
+    public void unregister(CommandManager manager) {
+        manager.unregisterCommand(this);
     }
 }

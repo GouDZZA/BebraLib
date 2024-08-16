@@ -29,6 +29,10 @@ public abstract class EzConfig {
         return files.get(name);
     }
 
+    public void clearFiles(){
+        this.files.clear();
+    }
+
 
     public <T> T getFromAs(String fileName, String path, Class<T> tClass){
         try {

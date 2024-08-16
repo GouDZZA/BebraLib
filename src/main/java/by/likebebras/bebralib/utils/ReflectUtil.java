@@ -10,7 +10,7 @@ public class ReflectUtil {
     public final String VERSION = Bukkit.getServer().getClass().getPackage().getName().split("//")[3];
 
 
-    public static <T> T getFieldContent(Class<?> clazz, final String field, final Object o) {
+    public <T> T getFieldContent(Class<?> clazz, final String field, final Object o) {
         final String originalClassName = new String(clazz.getName());
 
         do
@@ -23,7 +23,7 @@ public class ReflectUtil {
         return null;
     }
 
-    public static Object getFieldContent(final Field field, final Object o) {
+    public Object getFieldContent(final Field field, final Object o) {
         try {
             field.setAccessible(true);
 
