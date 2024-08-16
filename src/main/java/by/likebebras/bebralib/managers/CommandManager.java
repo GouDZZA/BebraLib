@@ -29,10 +29,12 @@ public class CommandManager {
     }
 
     private void register(EzCommand cmd){
-        Bukkit.getServer().getCommandMap().register(plugin.getName(), cmd);
-        Bukkit.getServer().getCommandMap().getKnownCommands().put(cmd.getLabel(), cmd);
+        CommandMap map = Bukkit.getServer().getCommandMap();
+
+        map.register(plugin.getName(), cmd);
+        map.getKnownCommands().put(cmd.getLabel(), cmd);
         for (String alias : cmd.getAliases()) {
-            Bukkit.getServer().getCommandMap().getKnownCommands().put(alias, cmd);
+            map.getKnownCommands().put(alias, cmd);
         }
     }
     private void unregister(EzCommand cmd){

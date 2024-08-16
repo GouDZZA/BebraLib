@@ -1,10 +1,9 @@
+by\likebebras\bebralib\managers\CommandManager.class
 by\likebebras\bebralib\utils\LogUtil.class
 by\likebebras\bebralib\BebraLibCommand.class
-by\likebebras\bebralib\managers\CommandManager.class
 by\likebebras\bebralib\BebraLibConfig.class
 by\likebebras\bebralib\ez\EzCommand.class
 by\likebebras\bebralib\ez\EzConfig.class
-by\likebebras\bebralib\utils\CommandHelper.class
 by\likebebras\bebralib\utils\ReflectUtil.class
 by\likebebras\bebralib\BebraLib.class
 by\likebebras\bebralib\ez\EzPlugin.class

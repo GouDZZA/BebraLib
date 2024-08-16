@@ -1,28 +1,34 @@
 package by.likebebras.bebralib.ez;
 
 import by.likebebras.bebralib.managers.CommandManager;
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class EzCommand extends Command {
     private boolean onlyPlayer = false, onlyConsole = false;
-    private final Set<Permission> perms = new HashSet<>();
     private final List<String> aliases = new ArrayList<>();
+
+    protected CommandSender sender;
+    protected String[] args;
+    protected String label;
 
     protected EzCommand(@NotNull String label) {
         super(label);
     }
 
-    public void addAlias(String... aliases){
-        for (String alias : aliases) this.aliases.add(alias);
+    public EzCommand addAlias(String... aliases){
+        Collections.addAll(this.aliases, aliases);
+
+        return this;
     }
 
     @Override
@@ -30,45 +36,60 @@ public abstract class EzCommand extends Command {
         return aliases;
     }
 
-    public abstract String wrongSender();
-
-    public void checkPerms(String... perms){
-        this.perms.addAll(Arrays.stream(perms).map(Permission::new).toList());
+    public boolean player(){
+        return sender instanceof Player;
+    }
+    public boolean console(){
+        return sender instanceof ConsoleCommandSender;
     }
 
-    public void onlyPlayers(){
+    public EzCommand setOnlyPlayers(){
         onlyPlayer = true;
-        onlyConsole(false);
+        onlyConsole = false;
+
+        return this;
     }
 
-    public void onlyPlayers(boolean b){
+    public String wrongSender(){
+        return "current sender is not supported!";
+    }
+
+    public EzCommand setOnlyPlayers(boolean b){
         onlyPlayer = b;
-        onlyConsole(!b);
+        onlyConsole = !b;
+
+        return this;
     }
 
-    public void onlyConsole(){
+    public EzCommand setOnlyConsole(){
         onlyConsole = true;
-        onlyPlayers(false);
+        onlyPlayer = false;
+
+        return this;
     }
 
-    public void onlyConsole(boolean b){
+    public EzCommand setOnlyConsole(boolean b){
         onlyConsole = b;
-        onlyPlayers(!b);
-    }
+        onlyPlayer = !b;
 
+        return this;
+    }
 
     @Override
     public final boolean execute(@NotNull CommandSender cs, @NotNull String s, @NotNull String[] args) {
         if  (onlyPlayer)         if (!(cs instanceof Player))        {  cs.sendMessage(wrongSender());  return true;  }
         if (onlyConsole)  if (!(cs instanceof ConsoleCommandSender)) {  cs.sendMessage(wrongSender());  return true;  }
 
-        onCommand(cs, s, args);
+        this.sender = cs;
+        this.label = s;
+        this.args = args;
+
+        onCommand();
 
         return true;
     }
 
-    public abstract void onCommand(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] args);
-
+    public abstract void onCommand();
 
     public void register(CommandManager manager){
         manager.registerCommand(this);

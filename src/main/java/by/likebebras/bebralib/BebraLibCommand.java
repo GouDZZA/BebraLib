@@ -2,7 +2,9 @@ package by.likebebras.bebralib;
 
 import by.likebebras.bebralib.ez.EzCommand;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BebraLibCommand extends EzCommand {
 
@@ -14,12 +16,8 @@ public class BebraLibCommand extends EzCommand {
     }
 
     @Override
-    public String wrongSender() {
-        return "";
-    }
-
-    @Override
-    public void onCommand(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] args) {
+    public void onCommand() {
         daddy.reloadConfig();
+        sender.sendMessage(daddy.getCfg().getStringFrom("messages.yml", "reloaded"));
     }
 }
