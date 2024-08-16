@@ -1,0 +1,4 @@
+name: BebraLib
+version: '${project.version}'
+main: by.likebebras.bebralib.BebraLib
+api-version: '1.20'
