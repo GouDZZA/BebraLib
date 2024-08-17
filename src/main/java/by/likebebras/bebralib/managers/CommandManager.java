@@ -1,6 +1,6 @@
 package by.likebebras.bebralib.managers;
 
-import by.likebebras.bebralib.ez.EzCommand;
+import by.likebebras.bebralib.ez.cmd.EzCommand;
 import by.likebebras.bebralib.ez.EzPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
