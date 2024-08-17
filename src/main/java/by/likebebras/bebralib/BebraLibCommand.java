@@ -1,10 +1,6 @@
 package by.likebebras.bebralib;
 
-import by.likebebras.bebralib.ez.EzCommand;
-import org.bukkit.command.CommandSender;
-
-import java.util.ArrayList;
-import java.util.List;
+import by.likebebras.bebralib.ez.cmd.EzCommand;
 
 public class BebraLibCommand extends EzCommand {
 

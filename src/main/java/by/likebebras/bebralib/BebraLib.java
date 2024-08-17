@@ -2,7 +2,9 @@ package by.likebebras.bebralib;
 
 import by.likebebras.bebralib.ez.EzPlugin;
 import by.likebebras.bebralib.managers.CommandManager;
+import lombok.Getter;
 
+@Getter
 public final class BebraLib extends EzPlugin {
     private final CommandManager manager = new CommandManager(this);
 

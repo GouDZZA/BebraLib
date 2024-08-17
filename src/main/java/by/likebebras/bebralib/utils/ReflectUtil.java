@@ -2,12 +2,15 @@ package by.likebebras.bebralib.utils;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 @UtilityClass
 public class ReflectUtil {
-    public final String VERSION = Bukkit.getServer().getClass().getPackage().getName().split("//")[3];
+    private final VersionChecker versionChecker = new VersionChecker();
 
 
     public <T> T getFieldContent(Class<?> clazz, final String field, final Object o) {
@@ -35,20 +38,44 @@ public class ReflectUtil {
         }
     }
 
-    public Class<?> getNMSClass(String name) {
-        try {
-            return Class.forName("net.minecraft.server." + VERSION + "." + name);
-        } catch (ClassNotFoundException e) {
-            LogUtil.warn("cannot found class: " + name);
-
-            return null;
-        }
+    private static Object createPacket(String packetClassName, Object... params) throws Exception {
+        Class<?> packetClass = getNMSClass(packetClassName);
+        Constructor<?> constructor = packetClass.getConstructor(getClasses(params));
+        return constructor.newInstance(params);
     }
-    public Class<?> getCBClass(String name){
+
+    private static void sendPacket(Player player, Object packet) throws Exception {
+        Object entityPlayer = getHandle(player);
+        Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
+        Method sendPacketMethod = playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet"));
+        sendPacketMethod.invoke(playerConnection, packet);
+    }
+
+    private static Object getHandle(Player player) throws Exception {
+        Method getHandleMethod = player.getClass().getMethod("getHandle");
+        return getHandleMethod.invoke(player);
+    }
+
+
+    private static Class<?> getNMSClass(String name) throws ClassNotFoundException {
+        String version = versionChecker.getVersion();
+        String fullName = versionChecker.isVersionAtLeast("v1_17_R1") ? "net.minecraft." + name : "net.minecraft.server." + version + "." + name;
+        return Class.forName(fullName);
+    }
+
+    private static Class<?>[] getClasses(Object... objects) {
+        Class<?>[] classes = new Class[objects.length];
+        for (int i = 0; i < objects.length; i++) {
+            classes[i] = objects[i].getClass();
+        }
+        return classes;
+    }
+
+    public Class<?> getCraftBukkitClass(String name){
         try {
-            return Class.forName("org.bukkit.craftbukkit." + VERSION + "." + name);
+            return Class.forName("org.bukkit.craftbukkit." + versionChecker.getVersion() + "." + name);
         } catch (ClassNotFoundException e) {
-            LogUtil.warn("cannot found class: " + name);
+            LogUtil.warn("cannot found CraftBukkit class: " + name);
 
             return null;
         }
