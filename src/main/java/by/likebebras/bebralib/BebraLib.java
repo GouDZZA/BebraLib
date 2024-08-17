@@ -10,10 +10,10 @@ public final class BebraLib extends EzPlugin {
 
     @Override
     public void onEnable() {
-        new BebraLibCommand(this).register(manager);
         this.cfg = new BebraLibConfig(this);
-
         cfg.load();
+
+        new BebraLibCommand(this).register(manager);
     }
 
     @Override

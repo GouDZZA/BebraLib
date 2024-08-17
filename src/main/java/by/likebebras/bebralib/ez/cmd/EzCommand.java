@@ -32,7 +32,7 @@ public class EzCommand extends Command {
     }
 
     @Override
-    public List<String> getAliases(){
+    public @NotNull List<String> getAliases(){
         return aliases;
     }
 

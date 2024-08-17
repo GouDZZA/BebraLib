@@ -1,5 +1,6 @@
 package by.likebebras.bebralib.ez;
 
+import by.likebebras.bebralib.utils.ColorUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -51,7 +52,10 @@ public abstract class EzConfig {
     }
 
     public String getStringFrom(String fileName, String path){
-        return files.get(fileName).getString(path, "Нету сообщения: " + path);
+        return fileName.toLowerCase().contains(".yml") ?
+                ColorUtil.hex(files.get(fileName).getString(path, "Нету сообщения: " + path))
+                :
+                ColorUtil.hex(files.get(fileName + ".yml").getString(path, "Нету сообщения: " + path));
     }
 
     private File getFile(String name){
