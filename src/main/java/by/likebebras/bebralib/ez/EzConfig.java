@@ -5,6 +5,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 public abstract class EzConfig {
@@ -51,11 +53,22 @@ public abstract class EzConfig {
         return null;
     }
 
+    public void saveFile(String name){
+        try {
+            files.get(name).save(getFile(name));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setInTo(String fileName, String path, Object to){
+        files.get(fileName).set(path, to);
+    }
+
     public String getStringFrom(String fileName, String path){
-        return fileName.toLowerCase().contains(".yml") ?
-                ColorUtil.hex(files.get(fileName).getString(path, "Нету сообщения: " + path))
-                :
-                ColorUtil.hex(files.get(fileName + ".yml").getString(path, "Нету сообщения: " + path));
+        fileName = fileName.toLowerCase().contains(".yml") ? fileName : fileName + ".yml";
+
+        return ColorUtil.hex(files.get(fileName).getString(path, "Нету сообщения: " + path));
     }
 
     private File getFile(String name){

@@ -1,5 +1,6 @@
 package by.likebebras.bebralib.ez.cmd;
 
+import by.likebebras.bebralib.ez.Executor;
 import by.likebebras.bebralib.managers.CommandManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
