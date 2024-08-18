@@ -139,10 +139,9 @@ public class EzCommand extends Command {
     public void onCommand(){
     }
 
-    public EzCommand onCommand(Executor executor){
+    public void onCommand(Executor executor){
         this.executor = executor;
 
-        return this;
     }
 
     public final void register(CommandManager manager){

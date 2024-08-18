@@ -5,11 +5,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-public abstract class EzConfig {
+public class EzConfig{
 
     private final EzPlugin plugin;
     private final HashMap<String, FileConfiguration> files = new HashMap<>();
@@ -18,14 +17,16 @@ public abstract class EzConfig {
         this.plugin = plugin;
     }
 
-    public abstract void reload();
+    public void reload(){
+        clearFiles();
+        load();
+    }
     public void load(){
         load("messages.yml", "settings.yml");
     }
     public void load(String... names){
         for (String name : names)
             files.put(name, getFileConfig(name));
-
     }
 
     public FileConfiguration getLoadedFile(String name){
