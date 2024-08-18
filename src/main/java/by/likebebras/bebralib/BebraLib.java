@@ -1,7 +1,6 @@
 package by.likebebras.bebralib;
 
 import by.likebebras.bebralib.ez.EzPlugin;
-import by.likebebras.bebralib.ez.menu.EzMenu;
 import by.likebebras.bebralib.ez.menu.MenuListener;
 import by.likebebras.bebralib.managers.CommandManager;
 import lombok.Getter;
