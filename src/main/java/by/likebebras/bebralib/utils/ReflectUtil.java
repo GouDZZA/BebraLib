@@ -50,9 +50,9 @@ public class ReflectUtil {
         sendPacketMethod.invoke(playerConnection, packet);
     }
 
-    private Object getHandle(Player player) throws Exception {
-        Method getHandleMethod = player.getClass().getMethod("getHandle");
-        return getHandleMethod.invoke(player);
+    private Object getHandle(Object object) throws Exception {
+        Method getHandleMethod = object.getClass().getMethod("getHandle");
+        return getHandleMethod.invoke(object);
     }
 
 

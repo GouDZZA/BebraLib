@@ -1,4 +1,4 @@
-package by.likebebras.bebralib.ez;
+package by.likebebras.bebralib.ez.cmd;
 
 import org.bukkit.command.CommandSender;
 
