@@ -17,6 +17,7 @@ class BebraLibCommand extends EzCommand {
         onCommand((cs, label, args) -> {
             sender.sendMessage(cfg.getStringFrom("messages.yml", "help"));
         });
+        setPermission("bebralib.admin");
     }
 
     private class ReloadCommand extends EzCommand {
