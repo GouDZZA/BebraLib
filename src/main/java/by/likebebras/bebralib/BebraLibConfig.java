@@ -51,7 +51,7 @@ public class BebraLibConfig extends EzConfig {
 
                 builder.type(type).name(name).lore(lore);
 
-                menu.addButton(new Button(builder.build(), slot));
+                menu.addButton(slot, new Button(builder.build()));
             }
         }
     }

@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -140,7 +142,6 @@ public class EzCommand extends Command {
 
     public void onCommand(Executor executor){
         this.executor = executor;
-
     }
 
     public final void register(CommandManager manager){
