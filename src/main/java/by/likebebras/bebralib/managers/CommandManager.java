@@ -29,14 +29,22 @@ public class CommandManager {
     }
 
     private void register(EzCommand cmd){
+        register(cmd, false);
+    }
+
+    private void register(EzCommand cmd, boolean hidden){
         CommandMap map = Bukkit.getServer().getCommandMap();
 
         map.register(plugin.getName(), cmd);
-        map.getKnownCommands().put(cmd.getLabel(), cmd);
-        for (String alias : cmd.getAliases()) {
-            map.getKnownCommands().put(alias, cmd);
+
+        if (!hidden) {
+            map.getKnownCommands().put(cmd.getLabel(), cmd);
+            for (String alias : cmd.getAliases()) {
+                map.getKnownCommands().put(alias, cmd);
+            }
         }
     }
+
     private void unregister(EzCommand cmd){
         if (cmd == null) return;
 
