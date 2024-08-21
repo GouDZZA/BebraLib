@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 @Getter
-public class BebraLibConfig extends EzConfig {
+class BebraLibConfig extends EzConfig {
     private EzMenu menu;
 
     public BebraLibConfig(BebraLib bebraLib) {

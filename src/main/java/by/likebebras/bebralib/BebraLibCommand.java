@@ -3,7 +3,7 @@ package by.likebebras.bebralib;
 import by.likebebras.bebralib.ez.cmd.EzCommand;
 import org.bukkit.entity.Player;
 
-public class BebraLibCommand extends EzCommand {
+class BebraLibCommand extends EzCommand {
 
     private final BebraLib daddy;
     private final BebraLibConfig cfg;
