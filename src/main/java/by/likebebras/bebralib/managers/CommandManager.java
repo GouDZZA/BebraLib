@@ -15,10 +15,16 @@ public class CommandManager {
         this.plugin = plugin;
     }
 
+    public void registerCommand(EzCommand cmd, boolean hidden){
+        commands.put(cmd.getLabel(), cmd);
+
+        register(cmd, hidden);
+    }
+
     public void registerCommand(EzCommand cmd){
         commands.put(cmd.getLabel(), cmd);
 
-        register(cmd);
+        register(cmd, false);
     }
 
     public void unregisterCommand(EzCommand cmd){
@@ -26,10 +32,6 @@ public class CommandManager {
         cmd.getAliases().forEach(commands::remove);
 
         unregister(cmd);
-    }
-
-    private void register(EzCommand cmd){
-        register(cmd, false);
     }
 
     private void register(EzCommand cmd, boolean hidden){
