@@ -1,6 +1,8 @@
 package by.likebebras.bebralib.utils;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -23,6 +25,16 @@ public class ReflectUtil {
 
         LogUtil.warn("No such field " + field + " in " + originalClassName + " or its superclasses");
         return null;
+    }
+
+    public CommandMap getCommandMap(){
+        try {
+            Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            return  (CommandMap) commandMapField.get(Bukkit.getServer());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to get CommandMap", e);
+        }
     }
 
     public Object getFieldContent(final Field field, final Object o) {

@@ -6,7 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class EzConfig{
 
@@ -54,6 +56,17 @@ public class EzConfig{
         return null;
     }
 
+    public <T> List<T> getAsListOf(String fileName, String path, Class<T> tClass){
+        List<T> list;
+
+        try {
+            list = (List<T>) getFromAs(fileName, path, List.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
     public void saveFile(String name){
         try {
             files.get(name).save(getFile(name));
@@ -64,6 +77,12 @@ public class EzConfig{
 
     public void setInTo(String fileName, String path, Object to){
         files.get(fileName).set(path, to);
+    }
+
+    public String getStringFrom(String fileName, String path, String throwElse){
+        fileName = fileName.toLowerCase().contains(".yml") ? fileName : fileName + ".yml";
+
+        return ColorUtil.hex(files.get(fileName).getString(path, throwElse));
     }
 
     public String getStringFrom(String fileName, String path){
