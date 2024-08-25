@@ -5,8 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.BlockDisplay;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,9 +17,10 @@ public class EzCommand extends Command {
     private final Map<String, EzCommand> subCommands = new HashMap<>();
 
     protected Executor executor;
+    protected TabExecutor tabExecutor;
     protected CommandSender sender;
     protected String[] args;
-    protected String label;
+    protected String label, wrongSender = "current sender is not supported!";
 
     public EzCommand(@NotNull String label) {
         super(label);
@@ -52,8 +51,8 @@ public class EzCommand extends Command {
         return this;
     }
 
-    public String wrongSender(){
-        return "current sender is not supported!";
+    public void wrongSender(String message){
+        wrongSender = message;
     }
 
     public EzCommand setOnlyPlayers(boolean b){
@@ -87,8 +86,8 @@ public class EzCommand extends Command {
 
     @Override
     public final boolean execute(@NotNull CommandSender cs, @NotNull String s, @NotNull String[] args) {
-        if  (onlyPlayer)         if (!(cs instanceof Player))        {  cs.sendMessage(wrongSender());  return true;  }
-        if (onlyConsole)  if (!(cs instanceof ConsoleCommandSender)) {  cs.sendMessage(wrongSender());  return true;  }
+        if  (onlyPlayer)         if (!(cs instanceof Player))        {  cs.sendMessage(wrongSender);  return true;  }
+        if (onlyConsole)  if (!(cs instanceof ConsoleCommandSender)) {  cs.sendMessage(wrongSender);  return true;  }
 
         this.sender = cs;
         this.label = s;
@@ -129,12 +128,17 @@ public class EzCommand extends Command {
             }
         }
 
+        if (tabExecutor != null) return tabExecutor.run(cs, alias, args);
         return onTabComplete();
     }
 
     @NotNull
     public List<String> onTabComplete() {
         return Collections.emptyList();
+    }
+
+    public void onTabComplete(TabExecutor executor){
+        this.tabExecutor = executor;
     }
 
     public void onCommand(){
