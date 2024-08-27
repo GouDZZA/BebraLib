@@ -55,7 +55,7 @@ public class EzMenu implements InventoryHolder {
 
     public void updateButtons(int... slots){
         for (int slot : slots) {
-            inv.setItem(slot, buttons.get(slot).getItem());
+            inv.setItem(slot-1, buttons.get(slot).getItem());
         }
     }
 

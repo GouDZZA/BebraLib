@@ -3,6 +3,7 @@ package by.likebebras.bebralib.ez;
 import by.likebebras.bebralib.utils.ColorUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.potion.PotionEffect;
 
 import java.io.File;
 import java.io.IOException;
