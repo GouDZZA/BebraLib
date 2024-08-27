@@ -1,6 +1,7 @@
 package by.likebebras.bebralib.ez.menu.listener;
 
 import by.likebebras.bebralib.ez.menu.EzMenu;
+import by.likebebras.bebralib.utils.RunnableUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +34,7 @@ public class MenuListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e){
         if (e.getInventory().getHolder() instanceof EzMenu menu){
-            if (!menu.isClosable()) menu.show((Player) e.getPlayer());
+            if (!menu.isClosable()) RunnableUtils.runLater(() -> menu.show((Player) e.getPlayer()), 1);
         }
     }
 
