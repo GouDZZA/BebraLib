@@ -114,6 +114,7 @@ public class EzCommand extends Command {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
             for (String subLabel : subCommands.keySet()) {
+                if (subCommands.get(subLabel).onlyConsole && !(cs instanceof ConsoleCommandSender)) continue;
                 if (subLabel.toLowerCase().startsWith(args[0].toLowerCase())) {
                     completions.add(subLabel);
                 }
@@ -124,6 +125,8 @@ public class EzCommand extends Command {
             if (subCommand != null) {
                 String[] subArgs = new String[args.length - 1];
                 System.arraycopy(args, 1, subArgs, 0, subArgs.length);
+
+                if (subCommand.tabExecutor != null) return subCommand.tabExecutor.run(cs, args[0], subArgs);
                 return subCommand.tabComplete(cs, args[0], subArgs, location);
             }
         }
@@ -154,5 +157,12 @@ public class EzCommand extends Command {
 
     public final void unregister(CommandManager manager) {
         manager.unregisterCommand(this);
+    }
+
+    public final List<String> filter(List<String> list, String currentArgument) {
+        return list
+                .stream()
+                .filter(s -> s.startsWith(currentArgument))
+                .toList();
     }
 }

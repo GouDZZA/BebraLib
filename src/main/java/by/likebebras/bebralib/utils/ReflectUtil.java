@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 @UtilityClass
 public class ReflectUtil {
 
-    private final VersionChecker versionChecker = new VersionChecker();
+    public final VersionChecker versionChecker = new VersionChecker();
 
     public <T> T getFieldContent(Class<?> clazz, final String field, final Object o) {
         final String originalClassName = new String(clazz.getName());
@@ -49,32 +49,32 @@ public class ReflectUtil {
         }
     }
 
-    private Object createPacket(String packetClassName, Object... params) throws Exception {
+    public Object createPacket(String packetClassName, Object... params) throws Exception {
         Class<?> packetClass = getNMSClass(packetClassName);
         Constructor<?> constructor = packetClass.getConstructor(getClasses(params));
         return constructor.newInstance(params);
     }
 
-    private void sendPacket(Player player, Object packet) throws Exception {
+    public void sendPacket(Player player, Object packet) throws Exception {
         Object entityPlayer = getHandle(player);
         Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
         Method sendPacketMethod = playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet"));
         sendPacketMethod.invoke(playerConnection, packet);
     }
 
-    private Object getHandle(Object object) throws Exception {
+    public Object getHandle(Object object) throws Exception {
         Method getHandleMethod = object.getClass().getMethod("getHandle");
         return getHandleMethod.invoke(object);
     }
 
 
-    private Class<?> getNMSClass(String name) throws ClassNotFoundException {
+    public Class<?> getNMSClass(String name) throws ClassNotFoundException {
         String version = versionChecker.getVersion();
         String fullName = versionChecker.isVersionAtLeast("v1_17_R1") ? "net.minecraft." + name : "net.minecraft.server." + version + "." + name;
         return Class.forName(fullName);
     }
 
-    private Class<?>[] getClasses(Object... objects) {
+    public Class<?>[] getClasses(Object... objects) {
         Class<?>[] classes = new Class[objects.length];
         for (int i = 0; i < objects.length; i++) {
             classes[i] = objects[i].getClass();
