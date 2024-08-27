@@ -1,6 +1,7 @@
 package by.likebebras.bebralib.ez.menu;
 
 import by.likebebras.bebralib.ez.menu.button.Button;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,9 +21,15 @@ public class EzMenu implements InventoryHolder {
 
     private int slots;
     private String title;
+    @Getter
+    private boolean closable = true;
 
     public EzMenu(Inventory inv) {
         this.inv = inv;
+    }
+
+    public void closable(boolean value){
+        closable = value;
     }
 
     public EzMenu(){
@@ -44,6 +51,12 @@ public class EzMenu implements InventoryHolder {
 
         if (inv != null)
             p.openInventory(inv);
+    }
+
+    public void updateButtons(int... slots){
+        for (int slot : slots) {
+            inv.setItem(slot, buttons.get(slot).getItem());
+        }
     }
 
     public void prepareInv(){
