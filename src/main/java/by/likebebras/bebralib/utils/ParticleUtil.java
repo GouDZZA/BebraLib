@@ -8,8 +8,8 @@ import org.bukkit.util.Vector;
 
 @UtilityClass
 public class ParticleUtil {
-    public void spawnParticleCircle(Player player, Particle particle, double velocity, int points, double offsetX, double offsetY, double offsetZ, double startRadius) {
-        Location center = player.getLocation().clone().add(offsetX, offsetY, offsetZ);
+    public void spawnParticleCircle(Location loc, Particle particle, double velocity, int points, double offsetX, double offsetY, double offsetZ, double startRadius) {
+        Location center = loc.clone().add(offsetX, offsetY, offsetZ);
 
         for (int i = 0; i < points; i++) {
             double angle = 2 * Math.PI * i / points;

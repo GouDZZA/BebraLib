@@ -56,6 +56,22 @@ public class EzConfig{
         return null;
     }
 
+    public <T> T getFromAs(String fileName, String path, Class<T> tClass, T dif){
+        try {
+            Object o = files.get(fileName).get(path);
+
+            if (o != null) return tClass.cast(o);
+        } catch (Exception e) {
+
+            if (tClass == String.class){
+                return (T) ("Нету сообщения: " + path);
+            }
+
+            throw new RuntimeException(e);
+        }
+        return dif;
+    }
+
     public <T> List<T> getAsListOf(String fileName, String path, Class<T> tClass){
         List<T> list;
 
