@@ -1,10 +1,16 @@
 package by.likebebras.bebralib.ez;
 
 import by.likebebras.bebralib.utils.ColorUtil;
+import by.likebebras.bebralib.utils.LogUtil;
+import com.destroystokyo.paper.ParticleBuilder;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.potion.PotionEffect;
 
+import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,14 +63,97 @@ public class EzConfig{
         return null;
     }
 
+    public double getDouble(String fileName, String path, double dif){
+        FileConfiguration file = getLoadedFile(fileName);
+
+        if (file == null) return dif;
+        else return file.getDouble(path, dif);
+    }
+
+    public double getDouble(String fileName, String path){
+        return getDouble(fileName, path, 0);
+    }
+
+    public float getFloat(String fileName, String path, float dif){
+        return (float) getDouble(fileName, path, dif);
+    }
+
+    public float getFloat(String fileName, String path){
+        return (float) getDouble(fileName, path);
+    }
+
+    public int getInt(String fileName, String path, int dif){
+        FileConfiguration file = getLoadedFile(fileName);
+
+        if (file == null) return dif;
+        else return file.getInt(path);
+    }
+
+    public int getInt(String fileName, String path){
+        return getInt(fileName, path, 0);
+    }
+
+    public EzSound getSound(String fileName, String path){
+        FileConfiguration file = getLoadedFile(fileName);
+
+        if (file == null) return EzSound.DEFAULT;
+
+        String compressedSound = file.getString(path);
+
+        if (compressedSound != null){
+            String[] soundArray = compressedSound.split(";");
+
+            float volume, pitch;
+            Sound sound;
+
+            if (soundArray.length > 2){
+                try {
+                    volume = Float.parseFloat(soundArray[1]);
+                    pitch = Float.parseFloat(soundArray[2]);
+
+                    sound = Sound.valueOf(soundArray[0].toUpperCase());
+
+                    return new EzSound(sound, volume, pitch);
+
+                } catch (NumberFormatException e) {
+                    sound = Sound.valueOf(soundArray[0].toUpperCase());
+
+                    LogUtil.warn(plugin.getClass().getSimpleName() + " not loaded fully sound string because of errors: " + compressedSound);
+
+                    return new EzSound(sound);
+                }
+            } else if (soundArray.length > 0){
+                sound = Sound.valueOf(soundArray[0].toUpperCase());
+
+                return new EzSound(sound);
+            }
+        }
+
+        ConfigurationSection cfg = file.getConfigurationSection(path);
+
+        if (cfg == null) return EzSound.DEFAULT;
+
+        float volume = (float) cfg.getDouble("volume", 1f),
+              pitch = (float) cfg.getDouble("pitch", 1f);
+
+        String soundString = cfg.getString("name");
+
+        if (soundString == null) return EzSound.DEFAULT;
+
+        Sound sound = Sound.valueOf(soundString.toUpperCase());
+
+        return new EzSound(sound, volume, pitch);
+    }
+
     public <T> T getFromAs(String fileName, String path, Class<T> tClass, T dif){
         try {
-            Object o = files.get(fileName).get(path);
+            Object o = getLoadedFile(fileName).get(path);
 
             if (o != null) return tClass.cast(o);
         } catch (Exception e) {
 
             if (tClass == String.class){
+
                 return (T) ("Нету сообщения: " + path);
             }
 
