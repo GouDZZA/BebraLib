@@ -93,41 +93,52 @@ public class EzConfig{
         return getInt(fileName, path, 0);
     }
 
+    public boolean getBoolean(String fileName, String path, boolean dif){
+        FileConfiguration file = getLoadedFile(fileName);
+
+        if (file == null) return dif;
+        return file.getBoolean(path);
+    }
+
+    public boolean getBoolean(String fileName, String path){
+        return getBoolean(fileName, path, false);
+    }
+
     public EzSound getSound(String fileName, String path){
         FileConfiguration file = getLoadedFile(fileName);
 
         if (file == null) return EzSound.DEFAULT;
 
-        String compressedSound = file.getString(path);
-
-        if (compressedSound != null){
-            String[] soundArray = compressedSound.split(";");
-
-            float volume, pitch;
-            Sound sound;
-
-            if (soundArray.length > 2){
-                try {
-                    volume = Float.parseFloat(soundArray[1]);
-                    pitch = Float.parseFloat(soundArray[2]);
-
-                    sound = Sound.valueOf(soundArray[0].toUpperCase());
-
-                    return new EzSound(sound, volume, pitch);
-
-                } catch (NumberFormatException e) {
-                    sound = Sound.valueOf(soundArray[0].toUpperCase());
-
-                    LogUtil.warn(plugin.getClass().getSimpleName() + " not loaded fully sound string because of errors: " + compressedSound);
-
-                    return new EzSound(sound);
-                }
-            } else if (soundArray.length > 0){
-                sound = Sound.valueOf(soundArray[0].toUpperCase());
-
-                return new EzSound(sound);
-            }
-        }
+//        String compressedSound = file.getString(path);
+//
+//        if (compressedSound != null){
+//            String[] soundArray = compressedSound.split(";");
+//
+//            float volume, pitch;
+//            Sound sound;
+//
+//            if (soundArray.length > 2){
+//                try {
+//                    volume = Float.parseFloat(soundArray[1]);
+//                    pitch = Float.parseFloat(soundArray[2]);
+//
+//                    sound = Sound.valueOf(soundArray[0].toUpperCase());
+//
+//                    return new EzSound(sound, volume, pitch);
+//
+//                } catch (NumberFormatException e) {
+//                    sound = Sound.valueOf(soundArray[0].toUpperCase());
+//
+//                    LogUtil.warn(plugin.getClass().getSimpleName() + " not loaded fully sound string because of errors: " + compressedSound);
+//
+//                    return new EzSound(sound);
+//                }
+//            } else if (soundArray.length > 0){
+//                sound = Sound.valueOf(soundArray[0].toUpperCase());
+//
+//                return new EzSound(sound);
+//            }
+//        }
 
         ConfigurationSection cfg = file.getConfigurationSection(path);
 
