@@ -2,18 +2,13 @@ package by.likebebras.bebralib.ez;
 
 import by.likebebras.bebralib.utils.ColorUtil;
 import by.likebebras.bebralib.utils.LogUtil;
-import com.destroystokyo.paper.ParticleBuilder;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.potion.PotionEffect;
 
-import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -109,37 +104,6 @@ public class EzConfig{
 
         if (file == null) return EzSound.DEFAULT;
 
-//        String compressedSound = file.getString(path);
-//
-//        if (compressedSound != null){
-//            String[] soundArray = compressedSound.split(";");
-//
-//            float volume, pitch;
-//            Sound sound;
-//
-//            if (soundArray.length > 2){
-//                try {
-//                    volume = Float.parseFloat(soundArray[1]);
-//                    pitch = Float.parseFloat(soundArray[2]);
-//
-//                    sound = Sound.valueOf(soundArray[0].toUpperCase());
-//
-//                    return new EzSound(sound, volume, pitch);
-//
-//                } catch (NumberFormatException e) {
-//                    sound = Sound.valueOf(soundArray[0].toUpperCase());
-//
-//                    LogUtil.warn(plugin.getClass().getSimpleName() + " not loaded fully sound string because of errors: " + compressedSound);
-//
-//                    return new EzSound(sound);
-//                }
-//            } else if (soundArray.length > 0){
-//                sound = Sound.valueOf(soundArray[0].toUpperCase());
-//
-//                return new EzSound(sound);
-//            }
-//        }
-
         ConfigurationSection cfg = file.getConfigurationSection(path);
 
         if (cfg == null) return EzSound.DEFAULT;
@@ -149,11 +113,20 @@ public class EzConfig{
 
         String soundString = cfg.getString("name");
 
-        if (soundString == null) return EzSound.DEFAULT;
+        if (soundString == null) {
+            LogUtil.warn("Error while loading sound for " + plugin.getClass().getSimpleName() + " no sound name provided, using default");
+            return EzSound.DEFAULT;
+        }
 
-        Sound sound = Sound.valueOf(soundString.toUpperCase());
+        try {
+            Sound sound = Sound.valueOf(soundString.toUpperCase());
+            return new EzSound(sound, volume, pitch);
 
-        return new EzSound(sound, volume, pitch);
+        } catch (IllegalArgumentException e) {
+            LogUtil.warn("loading sound for " + plugin.getClass().getSimpleName() + " thrown IAE, no such sound: " + soundString + ", using default");
+
+            return EzSound.DEFAULT;
+        }
     }
 
     public <T> T getFromAs(String fileName, String path, Class<T> tClass, T dif){
@@ -179,7 +152,8 @@ public class EzConfig{
         try {
             list = (List<T>) getFromAs(fileName, path, List.class);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            LogUtil.warn("loading list of " + tClass.getSimpleName() + " for " + plugin.getClass().getSimpleName() + " thrown " + e.getClass().getSimpleName() + ", " + e.getMessage());
+            return null;
         }
         return list;
     }
