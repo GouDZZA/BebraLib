@@ -86,6 +86,8 @@ public class EzCommand extends Command {
 
     @Override
     public final boolean execute(@NotNull CommandSender cs, @NotNull String s, @NotNull String[] args) {
+        if (!testPermissionSilent(cs)) return true;
+
         if  (onlyPlayer)         if (!(cs instanceof Player))        {  cs.sendMessage(wrongSender);  return true;  }
         if (onlyConsole)  if (!(cs instanceof ConsoleCommandSender)) {  cs.sendMessage(wrongSender);  return true;  }
 
