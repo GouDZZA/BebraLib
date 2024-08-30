@@ -116,7 +116,11 @@ public class EzCommand extends Command {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
             for (String subLabel : subCommands.keySet()) {
-                if (subCommands.get(subLabel).onlyConsole && !(cs instanceof ConsoleCommandSender)) continue;
+                EzCommand subCommand = subCommands.get(subLabel);
+
+                if (subCommand.onlyConsole && !(cs instanceof ConsoleCommandSender)) continue;
+                if (!subCommand.testPermissionSilent(cs)) continue;
+
                 if (subLabel.toLowerCase().startsWith(args[0].toLowerCase())) {
                     completions.add(subLabel);
                 }
@@ -124,7 +128,7 @@ public class EzCommand extends Command {
             return completions;
         } else if (args.length > 1) {
             EzCommand subCommand = subCommands.get(args[0].toLowerCase());
-            if (subCommand != null) {
+            if (subCommand != null && subCommand.testPermissionSilent(cs)) {
                 String[] subArgs = new String[args.length - 1];
                 System.arraycopy(args, 1, subArgs, 0, subArgs.length);
 
