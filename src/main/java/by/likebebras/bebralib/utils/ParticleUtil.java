@@ -3,7 +3,6 @@ package by.likebebras.bebralib.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 @UtilityClass
