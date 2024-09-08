@@ -165,7 +165,7 @@ public class EzCommand extends Command {
         manager.unregisterCommand(this);
     }
 
-    public final List<String> filter(List<String> list, String currentArgument) {
+    public final List<String> filter(Collection<String> list, String currentArgument) {
         return list
                 .stream()
                 .filter(s -> s.startsWith(currentArgument))
