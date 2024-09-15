@@ -1,9 +1,6 @@
 package by.likebebras.bebralib;
 
 import by.likebebras.bebralib.ez.cmd.EzCommand;
-import by.likebebras.bebralib.utils.ParticleUtil;
-import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 class BebraLibCommand extends EzCommand {

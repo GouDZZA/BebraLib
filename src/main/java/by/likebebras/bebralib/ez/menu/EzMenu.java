@@ -96,8 +96,7 @@ public class EzMenu implements InventoryHolder {
         Button button = getButton(slot);
         if (button == null) return;
 
-        if (button.isClickable())
-            button.onClick((Player) e.getWhoClicked(), e.getClick());
+        button.onClick((Player) e.getWhoClicked(), e.getClick());
     }
 
     public Button getButton(int slot){

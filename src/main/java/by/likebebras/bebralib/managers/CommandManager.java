@@ -3,11 +3,8 @@ package by.likebebras.bebralib.managers;
 import by.likebebras.bebralib.ez.EzPlugin;
 import by.likebebras.bebralib.ez.cmd.EzCommand;
 import by.likebebras.bebralib.utils.ReflectUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.SimpleCommandMap;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class CommandManager {

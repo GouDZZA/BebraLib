@@ -1,8 +1,8 @@
 package by.likebebras.bebralib;
 
 import by.likebebras.bebralib.ez.EzConfig;
-import by.likebebras.bebralib.ez.menu.button.Button;
 import by.likebebras.bebralib.ez.menu.EzMenu;
+import by.likebebras.bebralib.ez.menu.button.Button;
 import by.likebebras.bebralib.ez.menu.button.ItemBuilder;
 import by.likebebras.bebralib.utils.ColorUtil;
 import lombok.Getter;
